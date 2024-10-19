@@ -11,9 +11,9 @@ import { ref } from 'vue'; // Import ref for reactivity
 import { useRouter } from 'vue-router'; // Import useRouter for navigation
 
 // Import images
-import image1 from '../assets/image 1.PNG';
+import image1 from '../assets/image1.png';
 import image2 from '../assets/image2.PNG';
-import image3 from '../assets/image 3.png';
+import image3 from '../assets/image3.png';
 import image4 from '../assets/image4.PNG';
 import image5 from '../assets/image5.PNG';
 import image6 from '../assets/image6.PNG';
