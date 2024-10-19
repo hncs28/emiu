@@ -68,7 +68,7 @@ export default {
         currentIndex = (currentIndex + 1) % images.length; // Loop through images
         currentImage.value = images[currentIndex];
         currentText.value = texts[currentIndex]; // Update the text
-      }, 5000); // Change image every 5 seconds
+      }, 3000); // Change image every 5 seconds
 
       // Stop displaying images and navigate when the music ends
       audio.addEventListener('ended', () => {
