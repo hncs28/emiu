@@ -19,7 +19,7 @@ import image5 from '../assets/image5.PNG';
 import image6 from '../assets/image6.PNG';
 import image7 from '../assets/image7.PNG';
 import image8 from '../assets/image8.PNG';
-import image9 from '../assets/image9.jpg';
+import image9 from '../assets/image9.JPG';
 import image10 from '../assets/image10.PNG';
 import image11 from '../assets/image11.png';
 import image12 from '../assets/image12.png';
