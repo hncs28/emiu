@@ -1,5 +1,6 @@
 <template>
   <div class="container">
+    <h1 v-if="showImage">Kỷ niệm tụi mìnhhhh</h1>
     <img v-if="showImage" :src="currentImage" alt="Displayed Image" class="center-image" />
     <p v-if="showImage" class="image-text">{{ currentText }}</p> <!-- Display current text -->
     <button v-if="!showImage" @click="playMusic" class="play-button">Play Here</button>
