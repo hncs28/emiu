@@ -1,15 +1,16 @@
 <template>
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@700&display=swap" rel="stylesheet">
   <div class="container">
     <h1 v-if="showImage">Kỷ niệm tụi mìnhhhh</h1>
     <img v-if="showImage" :src="currentImage" alt="Displayed Image" class="center-image" />
-    <p v-if="showImage" class="image-text">{{ currentText }}</p> <!-- Display current text -->
-    <button v-if="!showImage" @click="playMusic" class="play-button">Play Here</button>
+    <p v-if="showImage" class="image-text">{{ currentText }}</p> 
+    <button v-if="!showImage" @click="playMusic" class="play-button">Ấn đây nài</button>
   </div>
 </template>
 
 <script>
-import { ref } from 'vue'; // Import ref for reactivity
-import { useRouter } from 'vue-router'; // Import useRouter for navigation
+import { ref } from 'vue'; 
+import { useRouter } from 'vue-router';
 
 // Import images
 import image1 from '../assets/image1.png';
@@ -24,11 +25,10 @@ import image9 from '../assets/image9.JPG';
 import image10 from '../assets/image10.PNG';
 import image11 from '../assets/image11.png';
 import image12 from '../assets/image12.png';
-import backgroundMusic from '../assets/oimatriu.mp3'; // Adjust path as needed
-
+import backgroundMusic from '../assets/oimatriu.mp3'; 
 export default {
   setup() {
-    const router = useRouter(); // Initialize router
+    const router = useRouter(); 
     const showImage = ref(false);
     const currentImage = ref('');
     const currentText = ref('');
@@ -67,10 +67,10 @@ export default {
       interval = setInterval(() => {
         currentIndex = (currentIndex + 1) % images.length; // Loop through images
         currentImage.value = images[currentIndex];
-        currentText.value = texts[currentIndex]; // Update the text
-      }, 3000); // Change image every 5 seconds
+        currentText.value = texts[currentIndex]; 
+      }, 3000); 
 
-      // Stop displaying images and navigate when the music ends
+      
       audio.addEventListener('ended', () => {
         clearInterval(interval); // Clear the interval to stop changing images
         showImage.value = false; // Hide the image
@@ -98,31 +98,61 @@ export default {
 <style scoped>
 .container {
   display: flex;
-  flex-direction: column; /* Stack items vertically */
+  flex-direction: column; 
   justify-content: center;
   align-items: center;
-  height: 100%; /* Full height of the viewport */
+  height: 100%; 
   width: 100%;
   background-color: black; /* Black background */
-  color: white; /* Optional: change text color */
+  color: white;
 }
 
 .center-image {
-  max-width: 100%; /* Make sure the image is responsive */
-  max-height: 80vh; /* Limit the height of the image */
+  max-width: 250px; /* Resize image to be smaller */
+  max-height: 400px;
+  border-radius: 10px; /* Optional: round image corners */
+}
+
+h1 {
+  font-family: 'Be Vietnam Pro', sans-serif; /* Use beautiful Vietnamese font */
+  color: #ff79c6; /* Soft pink color for contrast with black background */
+  font-size: 3rem; /* Adjust font size */
+  font-weight: 700; /* Make the text bold */
+  margin-bottom: 20px;
+  text-align: center;
+  letter-spacing: 2px;
 }
 
 .play-button {
-  color: white;
-  background-color: transparent;
-  border: 2px solid white;
-  padding: 10px 20px;
+  box-shadow: -4px 8px 0px 0px #7416ab;
+  background: linear-gradient(to bottom, #ff7aaf 5%, #9f39e3 100%);
+  background-color: #ff7aaf;
+  border: 2px solid #8e34c2;
+  display: inline-block;
   cursor: pointer;
-  font-size: 16px;
+  color: #ffffff;
+  font-family: Verdana;
+  font-size: 17px;
+  font-weight: bold;
+  padding: 13px 45px;
+  text-decoration: none;
+  text-shadow: 0px 3px 0px #9254cc;
+}
+
+.play-button:hover {
+  background: linear-gradient(to bottom, #9f39e3 5%, #ff7aaf 100%);
+  background-color: #9f39e3;
+}
+
+.play-button:active {
+  position: relative;
+  top: 1px;
 }
 
 .image-text {
-  margin: 10px 0; /* Add some space between the text lines */
-  text-align: center; /* Center the text */
+  margin: 10px 0;
+  text-align: center;
+  font-size: 1rem;
+  color: #ff79c6; /* Match text color with h1 */
 }
 </style>
