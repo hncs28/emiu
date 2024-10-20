@@ -1,18 +1,19 @@
 <template>
-  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@700&family=Dancing+Script:wght@600&display=swap" rel="stylesheet">
   <div class="container">
-    <h1 v-if="showImage">Kỷ niệm tụi mìnhhhh</h1>
+    <h1 v-if="showImage" class="title">Kỷ niệm tụi mìnhhhh</h1>
     <img v-if="showImage" :src="currentImage" alt="Displayed Image" class="center-image" />
-    <p v-if="showImage" class="image-text">{{ currentText }}</p> 
+    <p v-if="showImage" class="image-text">{{ currentText }}</p>
     <button v-if="!showImage" @click="playMusic" class="play-button">Ấn đây nài</button>
+    <div class="hearts-container" v-if="showHearts">
+      <div v-for="heart in hearts" :key="heart.id" class="heart" :style="heartStyle(heart)"></div>
+    </div>
   </div>
 </template>
 
 <script>
-import { ref } from 'vue'; 
+import { ref } from 'vue';
 import { useRouter } from 'vue-router';
-
-// Import images
 import image1 from '../assets/image1.png';
 import image2 from '../assets/image2.PNG';
 import image3 from '../assets/image3.png';
@@ -25,15 +26,17 @@ import image9 from '../assets/image9.JPG';
 import image10 from '../assets/image10.PNG';
 import image11 from '../assets/image11.png';
 import image12 from '../assets/image12.png';
-import backgroundMusic from '../assets/oimatriu.mp3'; 
+import backgroundMusic from '../assets/oimatriu.mp3';
+
 export default {
   setup() {
-    const router = useRouter(); 
+    const router = useRouter();
     const showImage = ref(false);
+    const showHearts = ref(false);
     const currentImage = ref('');
     const currentText = ref('');
-    
-    // Array of images and corresponding texts
+    const hearts = ref([]);
+
     const images = [image1, image2, image3, image4, image5, image6, image7, image8, image9, image10, image11, image12];
     const texts = [
       'Lần đầu đi chơi nà',
@@ -53,74 +56,110 @@ export default {
     let currentIndex = 0;
     let interval = null;
 
+    const generateHeart = () => {
+      hearts.value.push({
+        id: Date.now(),
+        size: Math.random() * 50 + 10,
+        left: Math.random() * 100,
+        duration: Math.random() * 5 + 3,
+      });
+      setTimeout(() => {
+        hearts.value.shift();
+      }, 5000);
+    };
+
     const playMusic = () => {
-      const audio = new Audio(backgroundMusic); // Your music file
-      audio.currentTime = 18; // Start the audio at the 18-second mark
+      const audio = new Audio(backgroundMusic);
+      audio.currentTime = 18;
       audio.play();
 
-      showImage.value = true; // Show the image when music plays
-      currentIndex = 0; // Reset index
-      currentImage.value = images[currentIndex]; // Set the initial image
-      currentText.value = texts[currentIndex]; // Set the initial text
+      showImage.value = true;
+      currentIndex = 0;
+      currentImage.value = images[currentIndex];
+      currentText.value = texts[currentIndex];
 
-      // Automatically change the image and text every 5 seconds
       interval = setInterval(() => {
-        currentIndex = (currentIndex + 1) % images.length; // Loop through images
+        currentIndex = (currentIndex + 1) % images.length;
         currentImage.value = images[currentIndex];
-        currentText.value = texts[currentIndex]; 
-      }, 3000); 
+        currentText.value = texts[currentIndex];
+      }, 3000);
 
-      
+      showHearts.value = true;
+      setInterval(generateHeart, 500);
+
       audio.addEventListener('ended', () => {
-        clearInterval(interval); // Clear the interval to stop changing images
-        showImage.value = false; // Hide the image
-        router.push({ name: 'NewPage' }); // Navigate to the new page
+        clearInterval(interval);
+        showImage.value = false;
+        showHearts.value = false;
+        router.push({ name: 'NewPage' });
       });
 
-      // Set a timeout to navigate to the new page after 57 seconds
       setTimeout(() => {
-        audio.pause(); // Pause the music
-        clearInterval(interval); // Clear the interval
-        showImage.value = false; // Hide the image
-        router.push({ name: 'NewPage' }); // Navigate to the new page
-      }, 57000); // 57 seconds
+        audio.pause();
+        clearInterval(interval);
+        showImage.value = false;
+        showHearts.value = false;
+        router.push({ name: 'NewPage' });
+      }, 57000);
     };
+
+    const heartStyle = (heart) => ({
+      width: `${heart.size}px`,
+      height: `${heart.size}px`,
+      left: `${heart.left}%`,
+      animationDuration: `${heart.duration}s`,
+    });
 
     return {
       showImage,
       currentImage,
       currentText,
       playMusic,
+      showHearts,
+      hearts,
+      heartStyle,
     };
   },
 };
 </script>
+
 <style scoped>
 .container {
   display: flex;
-  flex-direction: column; 
+  flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 100%; 
-  width: 100%;
-  background-color: black; /* Black background */
+  height: 100vh;
+  background: radial-gradient(circle at center, #000000, #000);
   color: white;
+  overflow: hidden;
+  position: relative;
 }
 
-.center-image {
-  max-width: 250px; /* Resize image to be smaller */
-  max-height: 400px;
-  border-radius: 10px; /* Optional: round image corners */
-}
-
-h1 {
-  font-family: 'Be Vietnam Pro', sans-serif; /* Use beautiful Vietnamese font */
-  color: #ff79c6; /* Soft pink color for contrast with black background */
-  font-size: 3rem; /* Adjust font size */
-  font-weight: 700; /* Make the text bold */
+.title {
+  font-family: 'Be Vietnam Pro', sans-serif;
+  color: #ff79c6;
+  font-size: 3rem;
+  font-weight: 700;
   margin-bottom: 20px;
   text-align: center;
   letter-spacing: 2px;
+  animation: fadeIn 1s ease-in-out;
+}
+
+.center-image {
+  max-width: 250px;
+  max-height: 400px;
+  border-radius: 10px;
+  animation: fadeIn 2s ease-in-out;
+}
+
+.image-text {
+  margin: 10px 0;
+  text-align: center;
+  font-size: 1rem;
+  color: #ff79c6;
+  animation: fadeIn 3s ease-in-out;
 }
 
 .play-button {
@@ -137,22 +176,57 @@ h1 {
   padding: 13px 45px;
   text-decoration: none;
   text-shadow: 0px 3px 0px #9254cc;
+  animation: bounce 2s infinite;
 }
 
 .play-button:hover {
   background: linear-gradient(to bottom, #9f39e3 5%, #ff7aaf 100%);
-  background-color: #9f39e3;
 }
 
-.play-button:active {
-  position: relative;
-  top: 1px;
+.hearts-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
 }
 
-.image-text {
-  margin: 10px 0;
-  text-align: center;
-  font-size: 1rem;
-  color: #ff79c6; /* Match text color with h1 */
+.heart {
+  position: absolute;
+  bottom: -50px;
+  width: 50px;
+  height: 50px;
+  background: rgba(255, 182, 193, 0.9);
+  border-radius: 50%;
+  animation: floatUp 5s linear infinite;
+  transform: scale(0.8);
+}
+
+@keyframes floatUp {
+  0% {
+    transform: translateY(0) scale(0.8);
+  }
+  100% {
+    transform: translateY(-100vh) scale(1);
+  }
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
 }
 </style>
