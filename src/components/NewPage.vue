@@ -29,7 +29,8 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh; /* Full screen height */
+  height: 100%;
+  width: 100%; /* Full screen height */
   background-color: #f8f1f1; /* Light background color */
   text-align: center;
   padding: 20px;
